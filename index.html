@@ -12,18 +12,21 @@
 
   <body>
 	<div class="container">
-    <h1>Topics</h1>
+    	<h1>Topics</h1>
+    		<div id="topics-list"></div>
+				<button data-topic="gardening">gardening</button>
+				<button data-topic="composting">composting</button>
+				<button data-topic="vermicomposting">vermicomposting</button>
+				<button data-topic="self-defense">self-defense</button>
 
-    <!-- Movies will get dumped here -->
-    <div id="topics-list"></div>
+	   			<form id="topic-form">
+	      			<label for="topic-input">Add a Topic of Interest</label>
+      				<input type="text" id="topic-input"><br>
+      				<input id="add-topic" type="submit" value="Add a Topic of Interest">
+    			</form>
 
-    <form id="topics-selection">
-      <label for="topic-input">Add a topic you are interested in</label>
-      <input type="text" id="topic-input"><br>
-
-      <!-- Button triggers new movie to be added -->
-      <input id="add-topic" type="submit" value="Add a Topic">
-    </form>
+				<div id="gifs-appear-here">
+  				</div>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
     <script src="gify.js"></script>

@@ -1,97 +1,45 @@
-    var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
 
-    var topics = ["Gardening ", "Composting ", "Vermicomposting ", "Self Defense "]; 
+	$("button").on("click", function() {
+      // Grabbing and storing the data-animal property value from the button
+      var topic = $(this).attr("data-topic");
 
+      // Constructing a queryURL using the animal name
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topic + "&api_key=dc6zaTOxFJmzC&limit=5";
 
-    $.ajax(
-    {
-      url: queryURL,
-      method: 'GET'
-    }
-    ).done(function(response) 
-    {
-    	var topicDiv = $("<div class='topic-info'>");
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        // After data comes back from the request
+        .done(function(response) {
+          console.log(queryURL);
 
-          // Storing the rating data
-          var rating = response.Rated;
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
 
-          // Creating an element to have the rating displayed
-          var rspnsOne = $("<p>").text("Rating: " + rating);
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
 
-          // Displaying the rating
-          topicDiv.append(rspnsOne);
+            // Creating and storing a div tag
+            var topicDiv = $("<div>");
 
-          // Storing the release year
-          var released = response.Released;
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
 
-          // Creating an element to hold the release year
-          var rspnsTwo = $("<p>").text("Released: " + released);
+            // Creating and storing an image tag
+            var topicImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            topicImage.attr("src", results[i].images.fixed_height.url);
 
-          // Displaying the release year
-          topicDiv.append(rspnsTwo);
+            // Appending the paragraph and image tag to the animalDiv
+            topicDiv.append(p);
+            topicDiv.append(topicImage);
 
-          // Storing the plot
-          var plot = response.Plot;
-
-          // Creating an element to hold the plot
-          var rspnsThree = $("<p>").text("Plot: " + plot);
-
-          // Appending the plot
-          topicDiv.append(rspnsThree);
-
-          // Retrieving the URL for the image
-          var imgURL = response.Poster;
-
-          // Creating an element to hold the image
-          var image = $("<img>").attr("src", imgURL);
-
-          // Appending the image
-          topicDiv.append(image);
-
-          // Putting the entire movie above the previous movies
-          $("#topics-list").prepend(topicDiv);
-                console.log(response);
+            // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
+            $("#gifs-appear-here").prepend(topicDiv);
+          }
         });
-
-    
-    function showButtons() {
-
-        // Deleting the topic buttons prior to adding new topic buttons
-        // (this is necessary otherwise we will have repeat buttons)
-        $("#topics-list").empty();
-
-        // Looping through the array of movies
-        for (var i = 0; i < topics.length; i++) {
-
-          // Then dynamicaly generating buttons for each topic in the array.
-          // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
-          var a = $("<button>");
-          // Adding a class
-          a.addClass("topic");
-          // Adding a data-attribute with a value of the topic at index i
-          a.attr("data-name", topics[i]);
-          // Providing the button's text with a value of the topic at index i
-          a.text(topics[i]);
-          // Adding the button to the HTML
-          $("#topics-list").append(a);
-        }
-      }
-
-        $("#add-topic").on("click", function(event) {
-        // event.preventDefault() prevents the form from trying to submit itself.
-        // We're using a form so that the user can hit enter instead of clicking the button if they want
-        event.preventDefault();
-
-        // This line will grab the text from the input box
-        var topic = $("#topic-input").val().trim();
-        // The topic from the textbox is then added to our array
-        topics.push(topic);
-
-        // calling showButtons which handles the processing of our topic array
-        showButtons();
-      });
-
-        showButtons();
-
-
-       
+    });
